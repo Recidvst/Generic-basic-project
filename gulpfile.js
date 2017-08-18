@@ -11,7 +11,7 @@ var gutil = require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
 var del = require('del');
 var browserSync = require('browser-sync').create();
-var babel = require("gulp-babel");
+var autoprefixer = require('gulp-autoprefixer');
 
 // Gulp Default tasks
 gulp.task('default', ['check', 'clean', 'sass', 'scripts', 'browser-sync', 'watch']);
@@ -30,7 +30,11 @@ gulp.task('sass', function() {
     'node_modules/bootstrap-grid/dist/grid.min.css',
     'scss/*.scss'
     ])
-    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.init())  
+    .pipe(autoprefixer({
+           browsers: ['last 5 versions'],
+           cascade: false
+       }))
     .pipe(sass().on('error', gutil.log))
     .pipe(cleancss())
     .pipe(concat('app.css'))
@@ -48,7 +52,6 @@ gulp.task('scripts', function() {
       'js/*.js'
       ])
       .pipe(sourcemaps.init())
-      .pipe(babel())
       .pipe(uglify().on('error', gutil.log))
       .pipe(concat('app.js'))
       .pipe(rename({
