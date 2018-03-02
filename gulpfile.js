@@ -1,5 +1,6 @@
 // Get Gulp packages
 var gulp = require('gulp');
+var babel = require('gulp-babel');
 
 // Packages Declaration
 var sass = require('gulp-sass');
@@ -27,7 +28,7 @@ gulp.task('watch', function() {
 gulp.task('sass', function() {
   return gulp.src(
     [
-    'node_modules/bootstrap-grid/dist/grid.min.css',
+    // 'node_modules/bootstrap-grid/dist/grid.min.css',
     'scss/*.scss'
     ])
     .pipe(sourcemaps.init())  
@@ -49,8 +50,10 @@ gulp.task('sass', function() {
 gulp.task('scripts', function() {
     return gulp.src(
       [
+      'node_modules/babel-polyfill/dist/polyfill.js',
       'js/*.js'
       ])
+      .pipe(babel({presets: ['es2015']}).on('error', gutil.log))
       .pipe(sourcemaps.init())
       .pipe(uglify().on('error', gutil.log))
       .pipe(concat('app.js'))
